@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { CHECK_COLLECTION } from "../flow/check-collection.script"
 import { CREATE_COLLECTION } from '../flow/create-collection.tx'
+import { DELETE_COLLECTION } from '../flow/delete-collection.tx'
 
 export default function useCollection(user) {
   const [loading, setLoading] = useState(true)
@@ -31,8 +32,7 @@ export default function useCollection(user) {
   const createCollection = async () => {
     try{
       let res = await mutate({
-        cadence: CREATE_COLLECTION,
-        limit: 55
+        cadence: CREATE_COLLECTION
       });
       await tx(res).onceSealed();
       setCollection(true)
@@ -43,6 +43,16 @@ export default function useCollection(user) {
   };
 
   const deleteCollection = async () => {
+    try {
+      let res = await mutate({
+        cadence: DELETE_COLLECTION
+      })
+      await tx(res).onceSealed();
+      setCollection(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false)
+    }
     setCollection(false)
     window.location.reload()
   }

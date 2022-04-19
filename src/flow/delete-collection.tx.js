@@ -1,12 +1,13 @@
 export const DELETE_COLLECTION = `
-  import DappyContract from 0xDappy
+import DappyContract from 0xDappy
 
-  transaction() {
-    prepare(acct: AuthAccount) {
-      let collectionRef <- acct.load<@DappyContract.Collection>(from: DappyContract.CollectionStoragePath)
-        ?? panic("Could not borrow collection reference")
-      destroy collectionRef
-      acct.unlink(DappyContract.CollectionPublicPath)
-    }
+transaction{
+  prepare(acct: AuthAccount) {
+    let collection <- acct.load<@DappyContract.Collection>(from: DappyContract.CollectionStoragePath)
+        ?? panic("Collection cannot be found/loaded")
+
+    destroy collection
+    acct.unlink(DappyContract.CollectionPublicPath)
   }
+}
 `
