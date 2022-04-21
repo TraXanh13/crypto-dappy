@@ -5,6 +5,7 @@ import { DEFAULT_DAPPIES } from "../config/dappies.config";
 import { mutate, query, tx } from "@onflow/fcl";
 import { LIST_USER_DAPPIES } from "../flow/list-user-dappies.script";
 import { MINT_DAPPY } from "../flow/mint-dappy.tx";
+import { useTxs } from "../providers/TxProvider";
 
 export default function useUserDappies(user, collection, getFUSDBalance) {
   const [state, dispatch] = useReducer(userDappyReducer, {
@@ -12,6 +13,8 @@ export default function useUserDappies(user, collection, getFUSDBalance) {
     error: false,
     data: [],
   });
+
+  const { addTx } = useTxs()
 
   useEffect(() => {
     const fetchUserDappies = async () => {
@@ -57,9 +60,10 @@ export default function useUserDappies(user, collection, getFUSDBalance) {
         limit: 55,
         args: (arg, t) => [arg(templateID, t.UInt32), arg(amount, t.UFix64)],
       });
+      addTx(res)
       await tx(res).onceSealed();
       await getFUSDBalance();
-      // await addDappy(templateID);
+      await addDappy(templateID);
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +71,12 @@ export default function useUserDappies(user, collection, getFUSDBalance) {
 
   const addDappy = async (templateID) => {
     try {
-      const dappy = DEFAULT_DAPPIES.find((d) => d?.templateID === templateID);
+      let res = await query({
+        cadence: LIST_USER_DAPPIES,
+        args: (arg, t) => [arg(user?.addr, t.Address)]
+      })
+      const dappies = Object.values(res);
+      const dappy = dappies.find((d) => d?.templateID === templateID);
       const newDappy = new DappyClass(dappy.templateID, dappy.dna, dappy.name);
       dispatch({ type: "ADD", payload: newDappy });
     } catch (err) {
