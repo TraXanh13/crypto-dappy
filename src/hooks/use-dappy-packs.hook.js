@@ -6,6 +6,8 @@ import { Pack } from '../utils/PackClass'
 import { DEFAULT_PACKS } from '../config/packs.config'
 import { query } from '@onflow/fcl'
 import { LIST_PACKS } from '../flow/list-packs.script'
+import { GET_PACK } from '../flow/get-pack.script'
+import { LIST_DAPPIES_IN_PACK } from '../flow/list-dappies-in-pack.script'
 
 export default function useDappyPacks() {
   const [state, dispatch] = useReducer(defaultReducer, {
@@ -31,12 +33,19 @@ export default function useDappyPacks() {
   }, [])
 
   const fetchPackDetails = async (packID) => {
-    let res = DEFAULT_PACKS.find(p => p.familyID === packID)
+    let res = await query({
+      cadence: GET_PACK,
+      args: (arg, t) => [arg(packID, t.UInt32)],
+    })
+    console.log(res)
     return new Pack(res?.familyID, res?.name, res?.price)
   }
 
   const fetchDappiesOfPack = async (packID) => {
-    let res = DEFAULT_PACKS.find(p => p.familyID === packID)?.templates
+    let res = await query({
+      cadence: LIST_DAPPIES_IN_PACK,
+      args: (arg, t) => [arg(packID, t.UInt32)]
+    })
     return res
   }
 
