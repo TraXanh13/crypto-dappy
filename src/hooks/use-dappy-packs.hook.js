@@ -4,6 +4,8 @@ import { useUser } from '../providers/UserProvider'
 
 import { Pack } from '../utils/PackClass'
 import { DEFAULT_PACKS } from '../config/packs.config'
+import { query } from '@onflow/fcl'
+import { LIST_PACKS } from '../flow/list-packs.script'
 
 export default function useDappyPacks() {
   const [state, dispatch] = useReducer(defaultReducer, {
@@ -17,7 +19,9 @@ export default function useDappyPacks() {
     const fetchPacks = async () => {
       dispatch({ type: 'PROCESSING' })
       try {
-        const res = DEFAULT_PACKS
+        const res = await query({
+          cadence: LIST_PACKS
+        })
         dispatch({ type: 'SUCCESS', payload: res })
       } catch (err) {
         dispatch({ type: 'ERROR' })
