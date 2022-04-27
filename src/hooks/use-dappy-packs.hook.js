@@ -78,7 +78,7 @@ export default function useDappyPacks() {
     let res = await mutate({
       cadence: MINT_DAPPIES_FROM_PACK,
       limit: 300,
-      args: (arg, t) => [arg(packNum, t.UInt32), arg(dappiesToMint, t.Array(t.UInt32), arg(amount, t.UFix64))]
+      args: (arg, t) => [arg(packNum, t.UInt32), arg(dappiesToMint, t.Array(t.UInt32)), arg(amount, t.UFix64)]
     })
     addTx(res)
     await tx(res).onceSealed
@@ -86,7 +86,6 @@ export default function useDappyPacks() {
 
     batchAddDappies(dappiesToMint)
   }
-
 
   return {
     ...state,
