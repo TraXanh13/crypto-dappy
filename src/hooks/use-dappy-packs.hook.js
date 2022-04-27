@@ -4,10 +4,13 @@ import { useUser } from '../providers/UserProvider'
 
 import { Pack } from '../utils/PackClass'
 import { DEFAULT_PACKS } from '../config/packs.config'
-import { query } from '@onflow/fcl'
+import { mutate, query, tx } from '@onflow/fcl'
 import { LIST_PACKS } from '../flow/list-packs.script'
 import { GET_PACK } from '../flow/get-pack.script'
 import { LIST_DAPPIES_IN_PACK } from '../flow/list-dappies-in-pack.script'
+import { useTxs } from '../providers/TxProvider'
+import { MINT_DAPPIES_FROM_PACK } from '../flow/mint-dappies-from-pack.tx'
+import { GET_FUSD_BALANCE } from '../flow/get-fusd-balance.script'
 
 export default function useDappyPacks() {
   const [state, dispatch] = useReducer(defaultReducer, {
@@ -15,7 +18,8 @@ export default function useDappyPacks() {
     error: false,
     data: []
   })
-  const { collection, batchAddDappies } = useUser()
+  const { collection, batchAddDappies, getFUSDBalance } = useUser()
+  const { runningTxs, addTx } = useTxs()
 
   useEffect(() => {
     const fetchPacks = async () => {
@@ -57,6 +61,11 @@ export default function useDappyPacks() {
       return
     }
 
+    if(runningTxs) {
+      alert("Previous transaction in process/nPlease wait...")
+      return
+    }
+
     var dappiesToMint = []
 
     for (let index = 0; index < dappies.length; index++) {
@@ -64,6 +73,16 @@ export default function useDappyPacks() {
       const randomNumber = Math.floor(Math.random() * dappies.length);
       dappiesToMint.push(dappies[randomNumber])
     }
+
+    let packNum = parseInt(packID.replace("Pack", ""))
+    let res = await mutate({
+      cadence: MINT_DAPPIES_FROM_PACK,
+      limit: 300,
+      args: (arg, t) => [arg(packNum, t.UInt32), arg(dappiesToMint, t.Array(t.UInt32), arg(amount, t.UFix64))]
+    })
+    addTx(res)
+    await tx(res).onceSealed
+    await getFUSDBalance() 
 
     batchAddDappies(dappiesToMint)
   }
