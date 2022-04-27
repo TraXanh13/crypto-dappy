@@ -86,11 +86,7 @@ export default function useUserDappies(user, collection, getFUSDBalance) {
 
   const batchAddDappies = async (dappies) => {
     try {
-      let res = await query({
-        cadence: LIST_USER_DAPPIES,
-        args: (arg, t) => [arg(user?.addr, t.Address)]
-      })
-      const allDappies = Object.values(res);
+      const allDappies = DEFAULT_DAPPIES;
       const dappyToAdd = allDappies.filter((d) =>
         dappies.includes(d?.templateID)
       );
