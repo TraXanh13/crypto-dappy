@@ -5,10 +5,10 @@
 }
 
 .btn-bg {
-  background: white;
+  background: green;
   padding: 0.5rem 1rem;
   mix-blend-mode: screen; /* This makes the cutout text possible */
-  color: black;
+  color: white;
 }
 
 .btn-bordered {

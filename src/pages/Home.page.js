@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Header
-        title={<><span className="highlight">Crypto</span>Dappy</>}
+        title={<><span className="highlight">Code</span>Ninjas</>}
         subtitle={<>The brand new <span className="highlight">collectible game</span> on the blockchain</>}
       />
       <img className="header-image"
