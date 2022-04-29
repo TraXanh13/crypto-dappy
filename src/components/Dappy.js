@@ -5,11 +5,12 @@ import Body from './DappyBody';
 import Eyes from './DappyEyes';
 import Stripes from './DappyStripes';
 
+// dna: 3-5 stripe color (last is eye color - single number refers to position of stripes)
 export default function Dappy({ dna = "FF5A9D.FFE922.60C5E5.0" }) {
   return (
     <svg className="wiggling" width="130" height="130" viewBox="0 0 530 530" fill="none" xmlns="http://www.w3.org/2000/svg" >
       <Body outline="white" />
-      <Stripes stripes={generateStripeColors(dna)} />
+      <Stripes stripes={generateStripeColors("725735.605edf.aaaaaa.1")} />
       <Eyes
         color={generateEyeColor(dna)}
         reflection="white"
