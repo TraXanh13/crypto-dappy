@@ -52,7 +52,7 @@ export default function useUserDappies(user, collection, getFUSDBalance) {
     try {
       let res = await mutate({
         cadence: MINT_DAPPY,
-        limit: 55,
+        limit: 300,
         args: (arg, t) => [arg(templateID, t.UInt32), arg(amount, t.UFix64)]
       })
       addTx(res)
