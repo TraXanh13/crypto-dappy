@@ -26,8 +26,8 @@ code {
 .app {
   text-align: center;
   background: #DA4453; 
-  background: -webkit-linear-gradient(to right, #89216B, #DA4453); 
-  background: linear-gradient(to right, #89216B, #DA4453);
+  background: -webkit-linear-gradient(to right, rgb(117, 146, 254), #ffff); 
+  background: linear-gradient(to right, rgb(117, 146, 254), #ffff);
 }
 
 .app__title {
