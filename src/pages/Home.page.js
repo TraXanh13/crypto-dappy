@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <Header
         title={<><span className="highlight">Code</span>Ninjas</>}
-        subtitle={<>The brand new <span className="highlight">collectible game</span> on the blockchain</>}
+        subtitle={<>The ninja <span className="highlight">collectible game</span> on the blockchain</>}
       />
       <img className="header-image"
         alt="Header"
