@@ -11,8 +11,8 @@ export default function Dappies() {
   return (
     <>
       <Header
-        title={<><span className="highlight">Dappy</span>Store</>}
-        subtitle={<>Buy individual <span className="highlight">dappies</span> in our store</>}
+        title={<><span className="highlight">Ninja</span>Store</>}
+        subtitle={<>Buy individual <span className="highlight">ninjas</span> in our store</>}
       />
       <ErrorLoadingRenderer loading={loading} error={error}>
         <DappyList dappies={dappyTemplates} store />

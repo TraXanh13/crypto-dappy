@@ -7,7 +7,7 @@ import Designer from '../pages/Designer.page'
 
 export const ROUTES = [
   { name: "Home", path: "/", component: Home, nav: true },
-  { name: "Dappies", path: "/dappies", component: Dappies, nav: true },
+  { name: "Ninjas", path: "/dappies", component: Dappies, nav: true },
   { name: "Collection", path: '/collection', component: Collection, nav: true },
   { name: "Packs", path: '/packs', component: Packs, nav: true },
   { name: "PackDetails", path: '/packs/:packID', component: PackDetails, nav: false },
